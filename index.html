@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasswordSafe - Generador</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="logopassword.png" alt="Logo de PasswordSafe" width="1200px" height="800px">
+            </div>
+            <h1>Generador de contraseñas</h1>
+            <p>En un mundo digital, la seguridad empieza por tus contraseñas. Esta herramienta te ayuda a crear claves robustas y a evaluar la fortaleza de las tuyas, ¡además de darte consejos vitales de ciberseguridad!</p>
+        </div>
+
+        <nav class="nav">
+            <a href="index.html" class="active">Generador</a>
+            <a href="evaluador.html">Evaluador</a>
+            <a href="ciberseguridad.html">Ciberseguridad</a>
+            <a href="preguntas-comunes.html">Preguntas Comunes</a>
+            <a href="historias-reales.html">Historias Reales</a>
+        </nav>
+
+        <hr>
+
+        <div class="page-content">
+            <div class="section">
+                <h2 class="section-title">✨ Genera una Contraseña Sólida</h2>
+                <div class="form-group">
+                    <label for="passwordLength">Longitud: <span id="lengthValue">12</span> caracteres</label>
+                    <input type="range" id="passwordLength" min="8" max="32" value="12">
+                </div>
+                <div class="checkbox-group">
+                    <label><input type="checkbox" id="includeUppercase" checked> Mayúsculas (ABC)</label>
+                    <label><input type="checkbox" id="includeLowercase" checked> Minúsculas (abc)</label>
+                    <label><input type="checkbox" id="includeNumbers" checked> Números (123)</label>
+                    <label><input type="checkbox" id="includeSymbols" checked> Símbolos (!@#)</label>
+                </div>
+                <button class="gen-button" onclick="generatePassword()">Generar Contraseña Segura</button>
+                <div id="generatedPassword">Tu contraseña segura aparecerá aquí</div>
+            </div>
+        </div>
+
+        <div class="creators">
+            <p>Creadores: Mateo Volpe, Emma Vera</p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 PasswordSafe. Tu seguridad es nuestra prioridad.</p>
+        </footer>
+    </div>
+
+    <script>
+        const lengthSlider = document.getElementById('passwordLength');
+        const lengthValueSpan = document.getElementById('lengthValue');
+        const generatedPasswordDiv = document.getElementById('generatedPassword');
+        const uppercaseChars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ';
+        const lowercaseChars = 'abcdefghijklmnopqrstuvwxyz';
+        const numberChars = '0123456789';
+        const symbolChars = '!@#$%^&*()_+~`|}{[]:;?><,./-=';
+
+        lengthSlider.addEventListener('input', () => {
+            lengthValueSpan.textContent = lengthSlider.value;
+        });
+
+        function generatePassword() {
+            const length = lengthSlider.value;
+            let characters = '';
+            let password = '';
+            const includeUppercase = document.getElementById('includeUppercase').checked;
+            const includeLowercase = document.getElementById('includeLowercase').checked;
+            const includeNumbers = document.getElementById('includeNumbers').checked;
+            const includeSymbols = document.getElementById('includeSymbols').checked;
+
+            if (includeUppercase) characters += uppercaseChars;
+            if (includeLowercase) characters += lowercaseChars;
+            if (includeNumbers) characters += numberChars;
+            if (includeSymbols) characters += symbolChars;
+
+            if (characters.length === 0) {
+                generatedPasswordDiv.textContent = '¡Activa al menos una opción para generar!';
+                return;
+            }
+
+            if (includeUppercase) password += uppercaseChars[Math.floor(Math.random() * uppercaseChars.length)];
+            if (includeLowercase) password += lowercaseChars[Math.floor(Math.random() * lowercaseChars.length)];
+            if (includeNumbers) password += numberChars[Math.floor(Math.random() * numberChars.length)];
+            if (includeSymbols) password += symbolChars[Math.floor(Math.random() * symbolChars.length)];
+
+            for (let i = password.length; i < length; i++) {
+                password += characters[Math.floor(Math.random() * characters.length)];
+            }
+
+            password = password.split('').sort(() => 0.5 - Math.random()).join('');
+            generatedPasswordDiv.textContent = password;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            generatePassword();
+        });
+    </script>
+</body>
+</html>

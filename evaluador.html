@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PasswordSafe - Evaluador</title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <div class="logo">
+                <img src="logopassword.png" alt="Logo de PasswordSafe" width="1200px" height="800px">
+            </div>
+            <h1>Evaluador de Contraseña</h1>
+            <p>Utiliza nuestra herramienta gratuita para evaluar la fortaleza de tu contraseña en segundos. Te ayudamos a identificar si es lo suficientemente robusta para proteger tu información personal y evitar accesos no autorizados.
+<br>
+✅ Verifica si es fácil de adivinar <br>
+<br>
+✅ Recibe sugerencias para mejorarla
+<br>
+✅ Sin almacenar tus datos — 100% privacidad garantizada
+        </div>
+
+        <nav class="nav">
+            <a href="index.html">Generador</a>
+            <a href="evaluador.html" class="active">Evaluador</a>
+            <a href="ciberseguridad.html">Ciberseguridad</a>
+            <a href="preguntas-comunes.html">Preguntas Comunes</a>
+             <a href="historias-reales.html">Historias Reales</a>
+        
+        </nav>
+
+        <hr>
+
+        <div class="page-content">
+            <div class="section">
+                <h2 class="section-title">🔍 Evalúa la Fortaleza de tu Contraseña</h2>
+                <div class="form-group">
+                    <label for="userPassword">Ingresa tu Contraseña:</label>
+                    <input type="text" id="userPassword" placeholder="Escribe tu contraseña aquí" onkeyup="evaluatePassword()">
+                </div>
+                <div id="strengthIndicator">
+                    <div id="strengthProgressBar"></div>
+                </div>
+                <div id="strengthText">Introduce una contraseña para evaluarla.</div>
+            </div>
+        </div>
+        
+        <div class="creators">
+            <p>Creadores: Mateo Volpe, Emma Vera </p>
+        </div>
+
+        <footer>
+            <p>&copy; 2025 PasswordSafe. Tu seguridad es nuestra prioridad.</p>
+        </footer>
+    </div>
+
+    <script>
+        const userPasswordInput = document.getElementById('userPassword');
+        const strengthIndicatorDiv = document.getElementById('strengthIndicator');
+        const strengthProgressBarDiv = document.getElementById('strengthProgressBar');
+        const strengthTextDiv = document.getElementById('strengthText');
+
+        function evaluatePassword() {
+            const password = userPasswordInput.value;
+            let score = 0;
+            let text = 'Introduce una contraseña para evaluarla.';
+            let indicatorClass = '';
+            let progressWidth = 0;
+
+            if (password.length > 0) {
+                if (password.length >= 8) score += 1;
+                if (password.length >= 12) score += 1;
+                if (password.length >= 16) score += 1;
+                if (password.length >= 20) score += 1;
+                if (password.match(/[A-Z]/)) score += 1;
+                if (password.match(/[a-z]/)) score += 1;
+                if (password.match(/[0-9]/)) score += 1;
+                if (password.match(/[^A-Za-z0-9]/)) score += 1;
+
+                let uniqueCharTypes = 0;
+                if (password.match(/[A-Z]/)) uniqueCharTypes++;
+                if (password.match(/[a-z]/)) uniqueCharTypes++;
+                if (password.match(/[0-9]/)) uniqueCharTypes++;
+                if (password.match(/[^A-Za-z0-9]/)) uniqueCharTypes++;
+                if (uniqueCharTypes >= 3) score += 1;
+                if (uniqueCharTypes === 4) score += 1;
+
+                if (score <= 3) {
+                    text = 'Débil 😟';
+                    indicatorClass = 'strength-weak';
+                    progressWidth = (score / 10) * 100;
+                } else if (score <= 6) {
+                    text = 'Media 🤔';
+                    indicatorClass = 'strength-medium';
+                    progressWidth = (score / 10) * 100;
+                } else {
+                    text = '¡Fuerte! 💪';
+                    indicatorClass = 'strength-strong';
+                    progressWidth = (score / 10) * 100;
+                }
+            }
+
+            strengthTextDiv.textContent = text;
+            strengthIndicatorDiv.className = '';
+            strengthIndicatorDiv.classList.add(indicatorClass);
+            strengthProgressBarDiv.style.width = Math.min(progressWidth, 100) + '%';
+        }
+    </script>
+</body>
+</html>
